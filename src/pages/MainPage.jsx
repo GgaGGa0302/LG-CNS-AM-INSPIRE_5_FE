@@ -12,7 +12,7 @@ const MOCK_FESTIVALS = [
     location: '서울특별시 강남구',
     startDate: '2026-04-01',
     endDate: '2026-04-15',
-    imageUrl: 'https://via.placeholder.com/300x200/D96B3A/FFFFFF?text=Culture',
+    imageUrl: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=800&auto=format&fit=crop', // 화사한 벚꽃 이미지
     category: 'Culture',
     aiScore: 96,
   },
@@ -22,7 +22,7 @@ const MOCK_FESTIVALS = [
     location: '부산광역시 해운대구',
     startDate: '2026-05-10',
     endDate: '2026-05-20',
-    imageUrl: 'https://via.placeholder.com/300x200/2C6B4F/FFFFFF?text=Art',
+    imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop', // 시원한 해변 이미지
     category: 'Art',
     aiScore: 92,
   },
@@ -32,7 +32,7 @@ const MOCK_FESTIVALS = [
     location: '제주특별자치도 서귀포시',
     startDate: '2026-03-20',
     endDate: '2026-04-10',
-    imageUrl: 'https://via.placeholder.com/300x200/F4C142/000000?text=Nature',
+    imageUrl: 'https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?q=80&w=800&auto=format&fit=crop', // 아름다운 봄꽃/자연 이미지
     category: 'Nature',
     aiScore: 98,
   },

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // useNavigate 추가
 import styled from 'styled-components';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
@@ -12,29 +12,53 @@ const SignUpForm = ({ onSuccess }) => {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  const navigate = useNavigate(); // 페이지 이동 마법사 추가
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // 1. 빈칸 검사 추가
+    if (!name || !email || !password || !passwordConfirm) {
+      setError('모든 항목을 빈칸 없이 입력해주세요.');
+      return;
+    }
+    // 2. 기존 비밀번호 일치 검사
     if (password !== passwordConfirm) {
       setError('비밀번호가 일치하지 않습니다.');
       return;
     }
+    // 3. 기존 비밀번호 길이 검사
     if (password.length < 8) {
       setError('비밀번호는 8자 이상이어야 합니다.');
       return;
     }
+    
     setError('');
     setLoading(true);
+
+    // === 프론트엔드 UI 테스트용 가짜 성공 로직 (1초 대기 후 이동) ===
+    setTimeout(() => {
+      setLoading(false);
+      alert('회원가입이 완료되었습니다! 로그인 해주세요.'); // 확인 창 띄우기
+      navigate('/login'); // 로그인 화면으로 슝!
+    }, 1000);
+
+    /* 
+    // 나중에 백엔드 서버 켜지면 이 주석을 풀고 위 코드를 지우세요!
     try {
       await signup({ loginId: email, password, name });
       if (onSuccess) {
         onSuccess();
+      } else {
+        navigate('/login');
       }
     } catch (err) {
       setError(err.message || '회원가입에 실패했습니다.');
     } finally {
       setLoading(false);
     }
+    */
   };
 
   return (

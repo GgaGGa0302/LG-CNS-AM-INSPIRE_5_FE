@@ -14,20 +14,31 @@ const LoginForm = () => {
   const { login: setAuth } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-    try {
-      const { data } = await login({ email, password });
-      setAuth(data.accessToken);
-      navigate('/');
-    } catch (err) {
-      setError(err.response?.data?.message || '로그인에 실패했습니다.');
-    } finally {
-      setLoading(false);
-    }
-  };
+// 기존 백엔드 연결 로직을 잠시 주석 처리하고, 무조건 메인페이지로 이동하게 수정
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+  setLoading(true);
+
+  // === 프론트엔드 UI 테스트용 가짜 성공 로직 (1초 대기 후 이동) ===
+  setTimeout(() => {
+    setLoading(false);
+    navigate('/'); // 메인페이지로 이동!
+  }, 1000); 
+
+  /* 
+  // 나중에 백엔드 서버 켜지면 이 주석을 풀고 위 코드를 지우세요!
+  try {
+    const { data } = await login({ email, password });
+    setAuth(data.accessToken);
+    navigate('/');
+  } catch (err) {
+    setError(err.response?.data?.message || '로그인에 실패했습니다.');
+  } finally {
+    setLoading(false);
+  }
+  */
+};
 
   return (
     <>
