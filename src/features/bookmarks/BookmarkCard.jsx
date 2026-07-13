@@ -14,7 +14,7 @@ const BookmarkCard = ({ bookmark, onUpdate, onDelete }) => {
 
   const handleEditClick = () => {
     setIsEditing(true);
-    // setTimeout을 사용하여 isEditing 상태가 반영된 후 포커스를 맞춥니다.
+
     setTimeout(() => textareaRef.current?.focus(), 0);
   };
 
@@ -23,9 +23,9 @@ const BookmarkCard = ({ bookmark, onUpdate, onDelete }) => {
 
     setSaving(true);
     try {
-      await updateBookmark(bookmark.bookmarkId, { memo });
-      onUpdate?.(bookmark.bookmarkId, { memo });
-      setIsEditing(false); // 저장 후 수정 모드 종료
+      await updateBookmark(bookmark.bookmarkId, { userMemo: memo });
+      onUpdate?.(bookmark.bookmarkId, { userMemo: memo });
+      setIsEditing(false); 
     } catch (err) {
       console.error('메모 수정 실패:', err);
     } finally {
@@ -34,7 +34,7 @@ const BookmarkCard = ({ bookmark, onUpdate, onDelete }) => {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm('이 축제를 찜 목록에서 삭제하시겠습니까?')) return;
+    // if (!window.confirm('이 축제를 찜 목록에서 삭제하시겠습니까?')) return;
     try {
       await deleteBookmark(bookmark.bookmarkId);
       onDelete?.(bookmark.bookmarkId);
@@ -44,9 +44,9 @@ const BookmarkCard = ({ bookmark, onUpdate, onDelete }) => {
   };
 
   const handleCardClick = (e) => {
-    // 버튼 클릭 시에는 카드 전체 클릭(페이지 이동)이 동작하지 않도록 함
+
     if (e.target.closest('button')) return;
-    // Note: Navigation is disabled as contentId is not available from the bookmarks list API.
+   
     navigate(`/festivals/${bookmark.contentId}`);
   };
 
@@ -55,13 +55,24 @@ const BookmarkCard = ({ bookmark, onUpdate, onDelete }) => {
       <CardImage $imageUrl={bookmark.imageUrl} />
       <CardBody>
         <CardTitle>{bookmark.title || '축제명'}</CardTitle>
+        {/* 
+          메모 영역 클릭 시 카드 전체 클릭(페이지 이동) 방지
+          수정 모드가 아닐 때 커서 모양이 바뀌지 않도록 cursor: default 적용
+        */}
         <MemoTextarea
           ref={textareaRef}
           value={memo}
-          onChange={(e) => setMemo(e.target.value)}
+          onChange={(e) => setMemo(e.target.value)} 
           readOnly={!isEditing}
+          onClick={(e) => {
+            e.stopPropagation(); // 수정 모드 여부와 관계없이 메모 영역 클릭 시 페이지 이동 방지
+          }}
+          style={{ cursor: isEditing ? 'text' : 'default' }}
         />
-        <CardActions>
+        {/* 버튼 영역 클릭 시 카드 전체 클릭(페이지 이동) 방지 */}
+        <CardActions onClick={(e) => {
+          e.stopPropagation();
+        }}>
           {isEditing ? (
             <SaveButton onClick={handleSave} disabled={saving}>
               {saving ? '저장 중...' : '저장'}
@@ -85,9 +96,6 @@ const BookmarkCard = ({ bookmark, onUpdate, onDelete }) => {
 
 export default BookmarkCard;
 
-// ==========================================
-// 🎨 Styles (단일 파일 평탄화 완료)
-// ==========================================
 
 const Card = styled.article`
   background-color: ${({ theme }) => theme.colors.surface};

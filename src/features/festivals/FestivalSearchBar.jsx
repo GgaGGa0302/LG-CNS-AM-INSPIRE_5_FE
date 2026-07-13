@@ -1,69 +1,147 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { REGION_CODES } from '../../utils/regionMapper.js';
+import { FiChevronDown } from 'react-icons/fi';
 
-const FestivalSearchBar = ({ onSearch }) => {
-  const [keyword, setKeyword] = useState('');
+const FestivalSearchBar = ({ onSearch, initialRegion = '' }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState(initialRegion);
+  const dropdownRef = useRef(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSearch({ keyword, areaCode: '', sigunguCode: '' });
+  // 현재 선택된 지역의 이름 찾기
+  const selectedLabel = REGION_CODES[selectedRegion] || '지역을 선택하세요';
+
+  const handleToggle = () => setIsOpen(!isOpen);
+
+  const handleSelect = (code) => {
+    setSelectedRegion(code);
+    setIsOpen(false);
+    onSearch({ region: code });
   };
 
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, []);
+
   return (
-    <SearchBarContainer as="form" onSubmit={handleSubmit}>
-      <SearchInput
-        type="text"
-        placeholder="지역명을 입력하세요 (예: 서울, 강남구)"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
-      />
-      <SearchButton type="submit">검색</SearchButton>
-    </SearchBarContainer>
+    <SelectWrapper ref={dropdownRef}>
+      {/* 🔲 커스텀 셀렉트 버튼 (보여지는 상자) */}
+      <SelectButton onClick={handleToggle} $isOpen={isOpen}>
+        <span>{selectedLabel}</span>
+        <FiChevronDown className="arrow-icon" />
+      </SelectButton>
+
+      {/* 📜 커스텀 옵션 리스트 (메뉴판) */}
+      {isOpen && (
+        <OptionList>
+          {Object.entries(REGION_CODES).map(([code, name]) => (
+            <OptionItem
+              key={code}
+              $isSelected={selectedRegion === code}
+              onClick={() => handleSelect(code)}
+            >
+              {name}
+            </OptionItem>
+          ))}
+        </OptionList>
+      )}
+    </SelectWrapper>
   );
 };
 
 export default FestivalSearchBar;
 
 // Styles
-const SearchBarContainer = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.md};
+const SelectWrapper = styled.div`
   width: 100%;
-  max-width: ${({ theme }) => theme.layout.maxWidth};
+  max-width: 550px;
   margin: 0 auto;
-  background-color: ${({ theme }) => theme.colors.surface};
-  border-radius: ${({ theme }) => theme.borderRadius.pill};
-  padding: ${({ theme }) => theme.spacing.sm};
-  box-shadow: ${({ theme }) => theme.shadows.lg};
+  position: relative;
+  font-family: inherit;
 `;
 
-const SearchInput = styled.input`
-  flex: 1;
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  border: none;
-  background-color: transparent;
+const SelectButton = styled.div`
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333333;
+  background-color: #ffffff;
+  
 
-  &:focus {
-    outline: none;
-  }
-
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.textLight};
-  }
-`;
-
-const SearchButton = styled.button`
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.lg};
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
-  background-color: ${({ theme }) => theme.colors.primary};
-  border-radius: ${({ theme }) => theme.borderRadius.pill};
-  white-space: nowrap;
-  transition: background-color 0.2s ease;
+  border: 1px solid ${({ $isOpen }) => ($isOpen ? '#c05c36' : '#e0e0e0')};
+  border-radius: 100px; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 
   &:hover {
-    background-color: #c25e2e; /* Darker terracotta */
+    border-color: #c05c36;
+  }
+
+
+  .arrow-icon {
+    font-size: 1.25rem;
+    color: #666666;
+    transition: transform 0.2s ease-in-out;
+    transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+  }
+`;
+
+
+const OptionList = styled.ul`
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  max-height: 280px;
+  overflow-y: auto;
+  
+  background-color: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  margin: 0;
+  list-style: none;
+  z-index: 100;
+  
+  /* 스크롤바 커스텀 */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #dddddd;
+    border-radius: 4px;
+  }
+`;
+
+
+const OptionItem = styled.li`
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: ${({ $isSelected }) => ($isSelected ? '600' : '500')};
+  
+  /* 🧡 선택된 아이템은 주황색 글씨, 호버 시 연한 살구빛 오렌지 배경 */
+  color: ${({ $isSelected }) => ($isSelected ? '#c05c36' : '#444444')};
+  background-color: ${({ $isSelected }) => ($isSelected ? '#fdf0e9' : 'transparent')};
+  
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+
+  &:hover {
+    color: #c05c36;
+    background-color: #fdf0e9;
   }
 `;

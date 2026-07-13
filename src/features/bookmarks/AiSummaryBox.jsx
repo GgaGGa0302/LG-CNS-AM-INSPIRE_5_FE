@@ -18,8 +18,8 @@ const AiSummaryBox = ({ summary, loading = false }) => {
           <FaRegStar size={14} />
         </StarBadge>
         <HeaderTitleDocs>
-          <h4>AI Family Analysis</h4>
-          <p>Based on real-time public data</p>
+          <h4>AI 분석 결과</h4>
+          <p>실시간 공공 데이터 기반</p>
         </HeaderTitleDocs>
       </HeaderSection>
 

@@ -11,7 +11,6 @@ const BookmarkButton = ({ isBookmarked, loading, onToggle }) => {
 
   const handleClick = () => {
     if (loading) return;
-    // 상위 컴포넌트에 클릭 이벤트를 알림
     onToggle?.();
   };
 

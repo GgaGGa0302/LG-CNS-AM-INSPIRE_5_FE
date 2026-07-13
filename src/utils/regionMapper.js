@@ -1,4 +1,4 @@
-const REGION_CODES = {
+export const REGION_CODES = {
   '11': '서울특별시',
   '12': '전남광주통합특별시', // API 명세서 기준, 일반적으론 광주(29)
   '26': '부산광역시',

@@ -9,16 +9,23 @@ const MOCK_BOOKMARKS = [
   {
     bookmarkId: 'mock-1',
     title: '서울 봄꽃 축제 (Mock)',
-    imageUrl: 'https://via.placeholder.com/300x200/D96B3A/FFFFFF?text=Culture',
+    imageUrl: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=800&auto=format&fit=crop',
     userMemo: '아이들과 함께 가기 좋아요!',
-    //contentId 추가예정
+    contentId: '1'
   },
   {
     bookmarkId: 'mock-2',
     title: '부산 해운대 모래축제 (Mock)',
-    imageUrl: 'https://via.placeholder.com/300x200/2C6B4F/FFFFFF?text=Art',
+    imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop',
     userMemo: '주차장 미리 확인 필요',
-     //contentId 추가예정
+    contentId: '2'
+  },
+  {
+    bookmarkId: 'mock-3',
+    title: '제주 유채꽃 축제 (Mock)',
+    imageUrl: 'https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?q=80&w=800&auto=format&fit=crop',
+    userMemo: '사진 찍기 좋은 곳. 사람이 많으니 아침 일찍 가는 것을 추천!',
+    contentId: '3'
   },
 ];
 
@@ -33,6 +40,8 @@ const MyPage = () => {
         setBookmarks(response.data.data || []); 
       } catch {
         setBookmarks(MOCK_BOOKMARKS);
+        // alert('찜 목록을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+        // setBookmarks([]);
       } finally {
         setLoading(false);
       }
@@ -66,7 +75,7 @@ const MyPage = () => {
             <CountBadge>
               <IoMdHeart className="heart-icon" size={16} />
               <span className="count-num">{bookmarks.length}</span>
-              <span className="count-text">saved</span>
+              <span className="count-text">저장됨</span>
             </CountBadge>
           </TitleContainer>
 

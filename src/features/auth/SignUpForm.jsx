@@ -9,7 +9,6 @@ const SignUpForm = ({ onSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
@@ -19,16 +18,11 @@ const SignUpForm = ({ onSuccess }) => {
     e.preventDefault();
     
     // 1. 빈칸 검사 추가
-    if (!name || !email || !password || !passwordConfirm) {
+    if (!name || !email || !password) {
       setError('모든 항목을 빈칸 없이 입력해주세요.');
       return;
     }
-    // 2. 기존 비밀번호 일치 검사
-    if (password !== passwordConfirm) {
-      setError('비밀번호가 일치하지 않습니다.');
-      return;
-    }
-    // 3. 기존 비밀번호 길이 검사
+    // 2. 기존 비밀번호 길이 검사
     if (password.length < 8) {
       setError('비밀번호는 8자 이상이어야 합니다.');
       return;
@@ -87,14 +81,6 @@ const SignUpForm = ({ onSuccess }) => {
           placeholder="비밀번호를 입력하세요"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        />
-        <Input
-          label="비밀번호 확인"
-          type="password"
-          name="passwordConfirm"
-          placeholder="비밀번호를 다시 입력하세요"
-          value={passwordConfirm}
-          onChange={(e) => setPasswordConfirm(e.target.value)}
         />
         {error && <p style={{ color: '#E74C3C', fontSize: '0.875rem' }}>{error}</p>}
         <Button type="submit" pill fullWidth disabled={loading}>
