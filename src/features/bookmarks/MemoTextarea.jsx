@@ -2,9 +2,9 @@ import { forwardRef } from 'react';
 import styled from 'styled-components';
 
 const MemoTextarea = forwardRef(
-  ({ value, onChange, placeholder = '커스텀 메모를 입력하세요', readOnly = false }, ref) => (
-    <MemoWrapper>
-      <MemoLabel>커스텀 메모</MemoLabel>
+  ({ value, onChange, placeholder = '개인 메모를 입력하세요', readOnly = false, onClick }, ref) => (
+    <MemoWrapper onClick={onClick}>
+      <MemoLabel>메모</MemoLabel>
       <MemoInput
         ref={ref}
         value={value}
@@ -44,8 +44,9 @@ const MemoInput = styled.textarea`
   line-height: 1.4;
 
   &[readOnly] {
-    background-color: transparent;
-    border-color: transparent;
+    /* 수정 모드가 아닐 때도 박스 형태를 유지하고, 편집 불가능 상태를 시각적으로 표시 */
+    background-color: ${({ theme }) => theme.colors.background};
+    border-color: ${({ theme }) => theme.colors.border};
   }
 
   &:focus {

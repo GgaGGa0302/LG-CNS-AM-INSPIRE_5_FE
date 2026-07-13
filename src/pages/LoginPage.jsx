@@ -10,7 +10,7 @@ const LoginPage = () => (
         <LogoArea>
           <LogoIcon>🎡</LogoIcon>
           <LogoText>FestMily</LogoText>
-          <LogoSubtext>리 가족에게 딱 맞는 축제를 찾아보세요</LogoSubtext>
+          <LogoSubtext>우리 가족에게 딱 맞는 축제를 찾아보세요</LogoSubtext>
         </LogoArea>
         <LoginForm />
       </LoginCard>
@@ -26,9 +26,8 @@ const PageWrapper = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding-top: ${({ theme }) => theme.spacing.xxl};
-  padding-bottom: ${({ theme }) => theme.spacing.xxl};
+  justify-content: center;
+  padding: ${({ theme }) => theme.spacing.xxl} ${({ theme }) => theme.spacing.xl};
   min-height: calc(100vh - ${({ theme }) => theme.layout.headerHeight});
 `;
 
@@ -36,9 +35,12 @@ const LoginCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90%;
-  max-width: 400px;
-  padding: ${({ theme }) => theme.spacing.xl};
+  width: 100%;
+  max-width: 420px;
+  padding: ${({ theme }) => theme.spacing.xxl};
+  background-color: ${({ theme }) => theme.colors.surface};
+  border-radius: ${({ theme }) => theme.borderRadius.xl};
+  box-shadow: ${({ theme }) => theme.shadows.lg};
 `;
 
 const LogoArea = styled.div`
