@@ -4,12 +4,15 @@ const fontImport = `@import url('https://fonts.googleapis.com/css2?family=DM+Ser
 
 const GlobalStyle = createGlobalStyle`
   ${fontImport}
+  
+  /* 🌟 여기에 폰트를 적용해야 테마를 이기고 모든 요소에 강제 적용됩니다! */
   *,
   *::before,
   *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
   }
 
   html {
@@ -19,7 +22,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
     line-height: 1.6;
