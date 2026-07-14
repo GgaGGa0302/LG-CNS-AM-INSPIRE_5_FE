@@ -42,12 +42,19 @@ const Card = styled.article`
 
 const CardImage = styled.div`
   width: 100%;
-  padding-top: 66.66%; /* 3:2 aspect ratio */
+  /* ❌ 기존의 가로로 긴 비율(padding-top: 66.66%;) 삭제 */
+  
+  /* ✅ 세로형 포스터에 맞게 3:4 비율로 변경 (정사각형을 원하면 1 / 1 로 수정하세요) */
+  aspect-ratio: 3 / 4; 
+  
   background-color: ${({ theme }) => theme.colors.border};
   background-image: ${({ $imageUrl }) =>
     $imageUrl ? `url(${$imageUrl})` : 'none'};
-  background-size: cover;
+    
+  /* 이미지가 비율을 유지하면서 박스를 꽉 채우도록 설정 */
+  background-size: cover; 
   background-position: center;
+  background-repeat: no-repeat;
   position: relative;
 `;
 
