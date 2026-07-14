@@ -31,14 +31,14 @@ const SignUpForm = ({ onSuccess }) => {
     setError('');
     setLoading(true);
 
-    // === 프론트엔드 UI 테스트용 가짜 성공 로직 (1초 대기 후 이동) ===
-    setTimeout(() => {
-      setLoading(false);
-      alert('회원가입이 완료되었습니다! 로그인 해주세요.'); // 확인 창 띄우기
-      navigate('/login'); // 로그인 화면으로 슝!
-    }, 1000);
+    // // === 프론트엔드 UI 테스트용 가짜 성공 로직 (1초 대기 후 이동) ===
+    // setTimeout(() => {
+    //   setLoading(false);
+    //   alert('회원가입이 완료되었습니다! 로그인 해주세요.'); // 확인 창 띄우기
+    //   navigate('/login'); // 로그인 화면으로 슝!
+    // }, 1000);
 
-    /* 
+  
     // 나중에 백엔드 서버 켜지면 이 주석을 풀고 위 코드를 지우세요!
     try {
       await signup({ loginId: email, password, name });
@@ -52,7 +52,7 @@ const SignUpForm = ({ onSuccess }) => {
     } finally {
       setLoading(false);
     }
-    */
+    
   };
 
   return (

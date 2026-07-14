@@ -102,7 +102,7 @@ export default MyPage;
 const PageWrapper = styled.main`
   flex: 1;
   padding: 60px 20px;
-  background-color: #fcfcfc;
+  /* background-color: #fcfcfc; */ /* 다른 페이지와 통일성을 위해 제거 */
   min-height: calc(100vh - 80px); 
 `;
 

@@ -9,7 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation(); // 📍 현재 어떤 페이지에 있는지 주소 가져오기
 
-  const isLogin = true;
+  // const isLogin = true;
 
   const handleLogout = () => {
     logout();
@@ -24,7 +24,7 @@ const Header = () => {
           <LogoText>FestMily</LogoText>
         </LogoContainer>
         <Nav>
-          {isLogin ? (
+          {isAuthenticated ? (
             <>
               {/* 🔍 축제 찾기 */}
               <NavLink $isActive={location.pathname === '/'} to="/">
