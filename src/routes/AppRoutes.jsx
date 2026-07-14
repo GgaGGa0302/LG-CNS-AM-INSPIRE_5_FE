@@ -13,25 +13,25 @@ const AppRoutes = () => (
     <Route
       path="/"
       element={
-        // <ProtectedRoute>
+         <ProtectedRoute>
           <MainPage />
-        // </ProtectedRoute>
+        </ProtectedRoute>
       }
     />
     <Route
       path="/festivals/:festivalId"
       element={
-        // <ProtectedRoute>
+        <ProtectedRoute>
           <DetailPage />
-        // </ProtectedRoute>
+         </ProtectedRoute>
       }
     />
     <Route
       path="/mypage"
       element={
-        // <ProtectedRoute>
+         <ProtectedRoute>
           <MyPage />
-        // </ProtectedRoute>
+        </ProtectedRoute>
       }
     />
     <Route path="*" element={<Navigate to="/" replace />} />

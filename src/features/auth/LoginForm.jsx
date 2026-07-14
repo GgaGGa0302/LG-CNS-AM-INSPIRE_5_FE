@@ -14,7 +14,7 @@ const LoginForm = () => {
   const { login: setAuth } = useAuth();
   const navigate = useNavigate();
 
-// 기존 백엔드 연결 로직을 잠시 주석 처리하고, 무조건 메인페이지로 이동하게 수정
+
 const handleSubmit = async (e) => {
   e.preventDefault();
   setError('');
@@ -24,10 +24,9 @@ const handleSubmit = async (e) => {
     const { data } = await login({ loginId: email, password }); 
     console.log("백엔드가 준 리얼 데이터:", data);
     
-    // 🌟 API 응답 구조에 맞게 data.data.token에서 토큰을 가져옵니다.
     if (data && data.token) {
       setAuth(data.token); 
-      navigate('/'); // 이제 에러 없이 무조건 메인 페이지로 이동 성공!
+      navigate('/'); 
     } else {
       setError('서버 응답 형식이 올바르지 않습니다.');
     }

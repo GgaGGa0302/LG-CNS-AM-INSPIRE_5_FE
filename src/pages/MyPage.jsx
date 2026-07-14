@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { IoMdHeart } from 'react-icons/io';
 import Header from '../components/Header.jsx';
-// 🌟 아까 확인한 카드 컴포넌트를 불러옵니다!
+import { getBookmarks } from '../api/bookmarksApi';
 import BookmarkCard from '../features/bookmarks/BookmarkCard.jsx';
 
-// 🌟 화면을 꾸며줄 가짜 찜 목록 데이터
+
 const MOCK_BOOKMARKS = [
   {
     bookmarkId: 'b1',
@@ -24,26 +24,31 @@ const MOCK_BOOKMARKS = [
 ];
 
 const MyPage = () => {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-  
-  // 🌟 내 찜 목록을 관리할 상태(State) 공간
+
   const [bookmarks, setBookmarks] = useState([]);
 
   useEffect(() => {
-    const isLoggedIn = true; // 프론트 UI 확인을 위한 임시 패스
+  const fetchBookmarks = async () => {
+    try {
+      const response = await getBookmarks();
+      console.log("북마크 전체 응답 구조:", response);
 
-    if (!isLoggedIn) {
-      alert('로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.');
-      navigate('/login'); 
-    } else {
-      // 🌟 API 통신 대신 임시 데이터를 찜 목록 상태에 집어넣습니다.
-      setBookmarks(MOCK_BOOKMARKS);
-      setIsLoading(false); 
+      if (response.data && response.data.data) {
+        setBookmarks(response.data.data);
+      } else {
+        setBookmarks([]);
+      }
+      
+    } catch (err) {
+      console.error("Failed to fetch bookmarks:", err);
+      // setBookmarks(MOCK_BOOKMARKS); 
+    } finally {
     }
-  }, [navigate]);
+  };
 
-  // 🌟 자식(BookmarkCard)에서 메모를 수정하고 '저장'을 눌렀을 때 실행됨
+  fetchBookmarks();
+}, []);
+
   const handleUpdate = (bookmarkId, updatedData) => {
     setBookmarks((prev) => 
       prev.map((item) => 
@@ -52,23 +57,30 @@ const MyPage = () => {
     );
   };
 
-  // 🌟 자식(BookmarkCard)에서 '삭제'를 눌렀을 때 실행됨
   const handleDelete = (bookmarkId) => {
     // 삭제된 아이디만 쏙 빼고 나머지 축제들로만 화면을 다시 그립니다.
     setBookmarks((prev) => prev.filter((item) => item.bookmarkId !== bookmarkId));
   };
 
-  if (isLoading) return null; 
 
   return (
     <>
       <Header />
       <PageWrapper>
         <PageInner>
-          <PageTitle>나의 찜 목록 🧡</PageTitle>
-          <PageSubtitle>
-            내가 찜한 축제와 정성스럽게 남긴 메모들을 한눈에 모아보세요.
-          </PageSubtitle>
+          <TitleContainer>
+            <TitleLeft>
+              <SubTitle>나의 보관함</SubTitle>
+              <PageTitle>내가 찜한 축제</PageTitle>
+              <TotalDesc>{bookmarks.length}개의 축제를 보관 중이에요 · 카드를 누르면 상세 페이지로 이동합니다</TotalDesc>
+            </TitleLeft>
+            
+            <CountBadge>
+              <IoMdHeart className="heart-icon" size={16} />
+              <span className="count-num">{bookmarks.length}</span>
+              <span className="count-text">저장됨</span>
+            </CountBadge>
+          </TitleContainer>
           
           <ContentArea>
             {bookmarks.length === 0 ? (
@@ -77,7 +89,6 @@ const MyPage = () => {
                 메인 화면에서 마음에 드는 축제를 찾아 메모를 남겨보세요!
               </EmptyState>
             ) : (
-              // 🌟 데이터가 있으면 예쁜 그리드 형태로 카드를 쫘르륵 나열합니다!
               <CardGrid>
                 {bookmarks.map((bookmark) => (
                   <BookmarkCard 
@@ -111,17 +122,67 @@ const PageInner = styled.div`
   margin: 0 auto;
 `;
 
-const PageTitle = styled.h1`
-  font-size: 2rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 12px;
+// 📌 상단 헤더 정렬용 컨테이너 (왼쪽: 타이틀 섹션 / 오른쪽: 뱃지 박스)
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* 아래선 정렬 */
+  margin-bottom: ${({ theme }) => theme.spacing.xl};
+  padding-bottom: ${({ theme }) => theme.spacing.md};
 `;
 
-const PageSubtitle = styled.p`
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 40px;
+const TitleLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: left; /* 왼쪽 정렬 변경 */
+`;
+
+const SubTitle = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.s};
+  font-weight: 700;
+  color: #d76d38; /* 아까 추출한 테라코타 포인트 컬러 적용 */
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+`;
+
+const PageTitle = styled.h1`
+  font-size: 36px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: 8px;
+`;
+
+const TotalDesc = styled.p`
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.textLight};
+`;
+
+const CountBadge = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 100px;
+  border: 1px solid #e9ded3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  height: fit-content;
+  margin-bottom: 6px; /* 설명 글 라인과 균형 맞춤 */
+
+  .heart-icon {
+    color: #c92a2a; /* 핑크/레드 하트 컬러 */
+  }
+
+  .count-num {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.text};
+  }
+
+  .count-text {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+    color: ${({ theme }) => theme.colors.textLight};
+  }
 `;
 
 const ContentArea = styled.div`
@@ -143,7 +204,7 @@ const EmptyState = styled.div`
   border: 1px dashed #ddd;
 `;
 
-// 🌟 카드들이 바둑판처럼 예쁘게 정렬되도록 도와주는 스타일
+
 const CardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

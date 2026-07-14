@@ -3,18 +3,23 @@ import { useNavigate } from 'react-router-dom';
 
 const FestivalCard = ({ festival }) => {
   const navigate = useNavigate();
-  const { id, title, location, startDate, endDate, imageUrl } = festival;
+  const { contentId, title, startDate, endDate, imageUrl, addr } = festival; 
+
+  const formatDate = (dateString) => {
+    if (!dateString || dateString.length !== 8) return dateString;
+    return `${dateString.substring(0, 4)}.${dateString.substring(4, 6)}.${dateString.substring(6, 8)}`;
+  };
 
   return (
-    <Card onClick={() => navigate(`/festivals/${id}`)}>
+     <Card onClick={() => navigate(`/festivals/${contentId}`)}>
       <CardImage $imageUrl={imageUrl}>
         {!imageUrl && '이미지 없음'}
       </CardImage>
       <CardBody>
         <CardTitle>{title}</CardTitle>
-        <CardMeta>{location}</CardMeta>
+        <CardMeta>{addr || '지역 정보 없음'}</CardMeta>
         <CardMeta>
-          {startDate} ~ {endDate}
+          {formatDate(startDate)} ~ {formatDate(endDate)}
         </CardMeta>
       </CardBody>
     </Card>
@@ -33,6 +38,12 @@ const Card = styled.article`
   flex-direction: column;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  /* 🌟 [치트키 1] 카드의 물리적 가로/세로 크기를 완전히 고정시킵니다! */
+  /* 이제 화면이 넓어지든 좁아지든 이 크기 아래위로 절대 변하지 않아요! */
+  width: 320px;
+  height: 370px;
+  box-sizing: border-box;
 
   &:hover {
     transform: translateY(-4px);
@@ -42,42 +53,54 @@ const Card = styled.article`
 
 const CardImage = styled.div`
   width: 100%;
-  /* ❌ 기존의 가로로 긴 비율(padding-top: 66.66%;) 삭제 */
   
-  /* ✅ 세로형 포스터에 맞게 3:4 비율로 변경 (정사각형을 원하면 1 / 1 로 수정하세요) */
-  aspect-ratio: 3 / 4; 
+  /* 🌟 [치트키 2] 전체 카드 370px 중 무려 270px을 이미지 영역이 다 먹도록 길게 세팅! */
+  /* 아래 쓸데없이 붕 뜨던 흰색 빈 공간이 완전히 사라지고 꽉 차 보입니다. */
+  height: 270px; 
+  flex-shrink: 0; /* 강제로 찌그러지지 않게 방어 */
   
   background-color: ${({ theme }) => theme.colors.border};
   background-image: ${({ $imageUrl }) =>
     $imageUrl ? `url(${$imageUrl})` : 'none'};
     
-  /* 이미지가 비율을 유지하면서 박스를 꽉 채우도록 설정 */
   background-size: cover; 
-  background-position: center;
+  background-position: top; /* 이미지를 위에서부터 표시하도록 변경 */
   background-repeat: no-repeat;
   position: relative;
 `;
 
 const CardBody = styled.div`
-  padding: ${({ theme }) => theme.spacing.md};
+  /* 패딩을 세밀하게 조정해서 텍스트 밀도를 높입니다. */
+  padding: 12px 16px; 
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xs};
-  flex: 1;
+  gap: 3px;
+  
+  /* 🌟 [치트키 3] 나머지 남은 100px은 텍스트 영역이 아주 슬림하고 깔끔하게 씁니다. */
+  height: 100px; 
+  box-sizing: border-box;
+  background-color: ${({ theme }) => theme.colors.surface};
+  justify-content: center;
 `;
 
 const CardTitle = styled.h3`
-  font-family: ${({ theme }) => theme.fonts.heading};
-  font-size: ${({ theme }) => theme.fontSizes.xl}; /* 카드 크기에 맞춰 폰트 크기 증가 */
-  font-weight: 400;
+  // font-family: ${({ theme }) => theme.fonts.heading};
+  font-size: ${({ theme }) => theme.fontSizes.md}; 
+  font-weight: 500;
   color: ${({ theme }) => theme.colors.text};
-  white-space: nowrap;
+  margin: 0;
+  
+  display: -webkit-box;
+  -webkit-line-clamp: 1; 
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.3;
 `;
 
 const CardMeta = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.sm};
+  margin: 0;
+  font-size: ${({ theme }) => theme.fontSizes.xs}; 
   color: ${({ theme }) => theme.colors.textLight};
   white-space: nowrap;
   overflow: hidden;

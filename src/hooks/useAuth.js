@@ -5,18 +5,18 @@ const useAuth = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem('token');
     setIsAuthenticated(!!token);
     setIsLoading(false);
   }, []);
 
   const login = useCallback((token) => {
-    localStorage.setItem('accessToken', token);
+    localStorage.setItem('token', token);
     setIsAuthenticated(true);
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem('token');
     setIsAuthenticated(false);
   }, []);
 
