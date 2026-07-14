@@ -11,28 +11,35 @@ const FestivalGrid = ({ festivals = [], loading = false }) => {
   }
 
   return (
-    <Grid>
-      {festivals.map((festival) => (
-        <FestivalCard key={festival.id} festival={festival} />
-      ))}
-    </Grid>
+    <GridContainer>
+      <Grid>
+        {festivals.map((festival) => (
+          <FestivalCard key={festival.contentId || festival.id} festival={festival} />
+        ))}
+      </Grid>
+    </GridContainer>
   );
 };
 
 export default FestivalGrid;
 
 // Styles
+const GridContainer = styled.div`
+  width: 100%;
+  max-width: 1200px; 
+  margin: 0 auto;
+  padding: 40px ${({ theme }) => theme.spacing.md};
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center; /* 🌟 결과가 몇 개든 화면 한가운데에 오도록 셋팅! */
+`;
+
 const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3열 그리드로 변경하여 카드 크기 확대 */
-  gap: ${({ theme }) => theme.spacing.lg};
-
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-
+  display: flex;
+  flex-wrap: wrap; /* 🌟 가로 크기가 고정된 카드들이 공간이 부족하면 자연스럽게 아래로 떨어지게 설정 */
+  gap: 24px; /* 카드 간의 우아한 여백 */
+  justify-content: center; /* 고정된 카드들이 이쁘게 가운데 정렬 */
+  width: 100%;
 `;
 
 const EmptyMessage = styled.p`

@@ -86,7 +86,8 @@ const BookmarkCard = ({ bookmark, onUpdate, onDelete }) => {
           {/* 🗑️ 삭제 버튼 영역 */}
           <DeleteButton onClick={handleDelete}>
             <FiTrash2 size={14} />
-            삭제
+            
+            찜 삭제
           </DeleteButton>
         </CardActions>
       </CardBody>

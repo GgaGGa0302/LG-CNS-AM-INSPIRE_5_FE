@@ -79,6 +79,9 @@ const DetailImage = styled.div`
   background-color: ${({ theme }) => theme.colors.border};
   background-image: url(${({ $imageUrl }) => $imageUrl});
   background-size: cover;
+  // background-image: url(${({ $imageUrl }) => $imageUrl || ''});
+  // background-size: contain; /* 이미지가 잘리지 않고 원본 비율을 유지하도록 변경 */
+  // background-repeat: no-repeat; /* 이미지가 반복되지 않도록 설정 */
   background-position: center;
   border-radius: ${({ theme }) => theme.borderRadius.xl};
   margin-bottom: ${({ theme }) => theme.spacing.md};

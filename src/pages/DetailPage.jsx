@@ -45,16 +45,15 @@ const DetailPage = () => {
   const fetchPageData = async () => {
     setIsLoading(true);
     try {
+      console.log(festivalId)
       const response = await getFestivalDetail(festivalId);
-      setFestival(response.data.data);
+      setFestival(response.data);
+      console.log('Festival detail:', response.data);
+    } catch (err) {
+      console.error('Failed to fetch festival detail:', err);
+      setFestival(null); // API 실패 시 데이터를 null로 설정하여 빈 상태를 유도
+    } finally {
       setIsLoading(false);
-    } catch {
-      // 🌟 [목표 1] AI 로딩 화면을 볼 수 있도록 1.5초 딜레이(지연) 추가
-      setTimeout(() => {
-        const fallbackFestival = MOCK_FESTIVALS.find((f) => f.contentId === festivalId);
-        setFestival({ ...fallbackFestival, contentId: festivalId });
-        setIsLoading(false);
-      }, 1500);
     }
   };
 
@@ -97,12 +96,13 @@ const DetailPage = () => {
         content: festival.content,
         aiInfo: festival.aiInfo,
         userMemo: memo, // 🌟 찜하기 시 메모도 함께 전송
+        addr: festival.addr || ''
       });
       await fetchPageData();
     } catch (err) {
-      // 백엔드 미연결 시 프론트 임시 성공 처리
-      alert('찜하기와 메모가 성공적으로 저장되었습니다! (임시)');
-      setFestival((prev) => ({ ...prev, isBookmarked: true }));
+      // 🌟 찜하기 실패 시 사용자에게 알림을 표시합니다.
+      alert('찜하기에 실패했습니다. 입력 내용을 확인하거나 잠시 후 다시 시도해주세요.');
+      console.error('찜하기 실패:', err);
     } finally {
       setIsModalOpen(false); // 팝업 닫기
       setMemo(''); // 메모 입력칸 초기화
