@@ -56,30 +56,20 @@ const MainPage = () => {
   const [searched, setSearched] = useState(false);
 
   const handleSearch = async (params) => {
-    setLoading(true);
-    setSearched(true);
-    try {
-      const { data } = await searchFestivals(params);
-      setFestivals(data.festivals || data);
-    } catch {
-      // 🌟 백엔드 에러 발생 시(아직 API 없을 때) 실행되는 가짜 필터링 로직!
-      setTimeout(() => {
-        const regionName = REGION_CODES[params.region]; // 예: '1' -> '서울특별시'
-        
-        if (regionName) {
-          // 선택된 지역 이름이 location에 포함된 축제만 쏙쏙 걸러냅니다.
-          const filtered = MOCK_FESTIVALS.filter(festival => 
-            festival.location.includes(regionName)
-          );
-          setFestivals(filtered);
-        } else {
-          // 지역이 없으면 전체를 다 보여줍니다.
-          setFestivals(MOCK_FESTIVALS);
-        }
-        setLoading(false);
-      }, 500); // 실제 API 통신처럼 보이게 0.5초 지연 효과
-    }
-  };
+  setLoading(true);
+  setSearched(true);
+  try {
+    const response = await searchFestivals(params);
+
+    console.log("실제 상태에 들어갈 배열:", response.data);
+    setFestivals(response.data || []); 
+    
+  } catch (err) {
+    console.error("Failed to fetch festivals:", err);
+  } finally {
+    setLoading(false); 
+  }
+};
 
   return (
     <>

@@ -1,10 +1,25 @@
 import styled from 'styled-components';
 import { getRegionName } from '../../utils/regionMapper.js';
 
-const FestivalDetailInfo = ({ festival }) => {
-  if (!festival) return null;
+const FestivalDetailInfo = ({ festival, loading }) => {
+  if (loading) {
+    return (
+      <div>
+        <SkeletonImage />
+        <SkeletonTitle />
+        <SkeletonMeta />
+        <DescriptionBox>
+          <SkeletonDescription />
+          <SkeletonDescription $width="80%" />
+          <SkeletonDescription $width="90%" />
+        </DescriptionBox>
+      </div>
+    );
+  }
 
-  const { title, region, content, imageUrl } = festival;
+  if (!festival) return null;
+  
+  const { title, region, content, imageUrl, addr } = festival;
 
   return (
     <div>
@@ -12,7 +27,7 @@ const FestivalDetailInfo = ({ festival }) => {
         {!imageUrl && '대표 이미지'}
       </DetailImage>
       <DetailTitle>{title}</DetailTitle>
-      <DetailMeta>{getRegionName(region)}</DetailMeta>
+      <DetailMeta>{addr || getRegionName(region)}</DetailMeta>
 
       <DescriptionBox>
         <DescriptionTitle>축제 소개</DescriptionTitle>
@@ -26,6 +41,36 @@ const FestivalDetailInfo = ({ festival }) => {
 
 export default FestivalDetailInfo;
 
+// --- 로딩 스켈레톤 스타일 ---
+const Skeleton = styled.div`
+  background-color: ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  animation: pulse 1.5s infinite ease-in-out;
+
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+  }
+`;
+
+const SkeletonImage = styled(Skeleton)`
+  width: 100%;
+  padding-top: 56.25%;
+  margin-bottom: ${({ theme }) => theme.spacing.md};
+`;
+
+const SkeletonTitle = styled(Skeleton)`
+  width: 70%;
+  height: 38px;
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
+`;
+
+const SkeletonMeta = styled(Skeleton)`
+  width: 40%;
+  height: 24px;
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
+`;
 
 
 const DetailImage = styled.div`
@@ -79,4 +124,9 @@ const DetailDescription = styled.p`
   line-height: 1.75;
   white-space: pre-wrap;
   margin: 0;
+`;
+
+const SkeletonDescription = styled(Skeleton)`
+  width: ${(props) => props.$width || '100%'};
+  height: 22px;
 `;

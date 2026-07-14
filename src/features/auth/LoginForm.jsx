@@ -20,24 +20,24 @@ const handleSubmit = async (e) => {
   setError('');
   setLoading(true);
 
-  // === 프론트엔드 UI 테스트용 가짜 성공 로직 (1초 대기 후 이동) ===
-  setTimeout(() => {
-    setLoading(false);
-    navigate('/'); // 메인페이지로 이동!
-  }, 1000); 
-
-  /* 
-  // 나중에 백엔드 서버 켜지면 이 주석을 풀고 위 코드를 지우세요!
   try {
-    const { data } = await login({ email, password });
-    setAuth(data.accessToken);
-    navigate('/');
+    const { data } = await login({ loginId: email, password }); 
+    console.log("백엔드가 준 리얼 데이터:", data);
+    
+    // 🌟 API 응답 구조에 맞게 data.data.token에서 토큰을 가져옵니다.
+    if (data && data.token) {
+      setAuth(data.token); 
+      navigate('/'); // 이제 에러 없이 무조건 메인 페이지로 이동 성공!
+    } else {
+      setError('서버 응답 형식이 올바르지 않습니다.');
+    }
+
   } catch (err) {
+    console.error("프론트엔드 함수 내부 에러:", err);
     setError(err.response?.data?.message || '로그인에 실패했습니다.');
   } finally {
     setLoading(false);
   }
-  */
 };
 
   return (
