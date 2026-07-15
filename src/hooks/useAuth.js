@@ -4,11 +4,21 @@ const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);
-    setIsLoading(false);
-  }, []);
+      const checkAuth = () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+        setIsLoading(false);
+      };
+
+      checkAuth();
+    }, []); 
+
 
   const login = useCallback((token) => {
     localStorage.setItem('token', token);

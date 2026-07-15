@@ -59,7 +59,7 @@ const BookmarkCard = ({ bookmark, onUpdate, onDelete }) => {
         <MemoTextarea
           ref={textareaRef}
           value={memo}
-          onChange={(e) => setMemo(e.target.value)} 
+          onChange={(e) => setMemo(e.target.value.substring(0, 255))}
           readOnly={!isEditing}
           onClick={(e) => {
             e.stopPropagation();
