@@ -22,7 +22,6 @@ const handleSubmit = async (e) => {
 
   try {
     const { data } = await login({ loginId: email, password }); 
-    console.log("백엔드가 준 리얼 데이터:", data);
     
     if (data && data.token) {
       setAuth(data.token); 

@@ -44,7 +44,6 @@ const MemoInput = styled.textarea`
   line-height: 1.4;
 
   &[readOnly] {
-    /* 수정 모드가 아닐 때도 박스 형태를 유지하고, 편집 불가능 상태를 시각적으로 표시 */
     background-color: ${({ theme }) => theme.colors.background};
     border-color: ${({ theme }) => theme.colors.border};
   }

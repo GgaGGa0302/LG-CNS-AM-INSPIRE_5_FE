@@ -1,9 +1,17 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import FestivalCard from './FestivalCard';
 
 const FestivalGrid = ({ festivals = [], loading = false }) => {
   if (loading) {
-    return <EmptyMessage>축제를 검색하고 있습니다...</EmptyMessage>;
+
+    return (
+      <LoadingContainer>
+        <Spinner />
+        <LoadingText>
+          축제를 검색 중입니다. 잠시만 기다려주세요...
+        </LoadingText>
+      </LoadingContainer>
+    );
   }
 
   if (festivals.length === 0) {
@@ -31,14 +39,14 @@ const GridContainer = styled.div`
   padding: 40px ${({ theme }) => theme.spacing.md};
   box-sizing: border-box;
   display: flex;
-  justify-content: center; /* 🌟 결과가 몇 개든 화면 한가운데에 오도록 셋팅! */
+  justify-content: center; 
 `;
 
 const Grid = styled.div`
   display: flex;
-  flex-wrap: wrap; /* 🌟 가로 크기가 고정된 카드들이 공간이 부족하면 자연스럽게 아래로 떨어지게 설정 */
-  gap: 24px; /* 카드 간의 우아한 여백 */
-  justify-content: center; /* 고정된 카드들이 이쁘게 가운데 정렬 */
+  flex-wrap: wrap; 
+  gap: 24px;
+  justify-content: flex-start; 
   width: 100%;
 `;
 
@@ -47,4 +55,34 @@ const EmptyMessage = styled.p`
   padding: ${({ theme }) => theme.spacing.xxl} 0;
   color: ${({ theme }) => theme.colors.textLight};
   font-size: ${({ theme }) => theme.fontSizes.lg};
+`;
+
+
+const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing.xxl} 0;
+`;
+
+
+const spin = keyframes`
+  to { transform: rotate(360deg); }
+`;
+
+const Spinner = styled.div`
+  width: 40px;
+  height: 40px;
+  border: 5px solid #f4ebe1; 
+  border-top-color: #c05c36; 
+  border-radius: 50%;
+  animation: ${spin} 1s linear infinite;
+`;
+
+
+const LoadingText = styled.p`
+  margin-top: ${({ theme }) => theme.spacing.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  color: ${({ theme }) => theme.colors.textLight};
 `;

@@ -39,8 +39,6 @@ const Card = styled.article`
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   
-  /* 🌟 [치트키 1] 카드의 물리적 가로/세로 크기를 완전히 고정시킵니다! */
-  /* 이제 화면이 넓어지든 좁아지든 이 크기 아래위로 절대 변하지 않아요! */
   width: 320px;
   height: 370px;
   box-sizing: border-box;
@@ -53,30 +51,24 @@ const Card = styled.article`
 
 const CardImage = styled.div`
   width: 100%;
-  
-  /* 🌟 [치트키 2] 전체 카드 370px 중 무려 270px을 이미지 영역이 다 먹도록 길게 세팅! */
-  /* 아래 쓸데없이 붕 뜨던 흰색 빈 공간이 완전히 사라지고 꽉 차 보입니다. */
   height: 270px; 
-  flex-shrink: 0; /* 강제로 찌그러지지 않게 방어 */
+  flex-shrink: 0;
   
   background-color: ${({ theme }) => theme.colors.border};
   background-image: ${({ $imageUrl }) =>
     $imageUrl ? `url(${$imageUrl})` : 'none'};
     
   background-size: cover; 
-  background-position: top; /* 이미지를 위에서부터 표시하도록 변경 */
+  background-position: top; 
   background-repeat: no-repeat;
   position: relative;
 `;
 
 const CardBody = styled.div`
-  /* 패딩을 세밀하게 조정해서 텍스트 밀도를 높입니다. */
   padding: 12px 16px; 
   display: flex;
   flex-direction: column;
   gap: 3px;
-  
-  /* 🌟 [치트키 3] 나머지 남은 100px은 텍스트 영역이 아주 슬림하고 깔끔하게 씁니다. */
   height: 100px; 
   box-sizing: border-box;
   background-color: ${({ theme }) => theme.colors.surface};

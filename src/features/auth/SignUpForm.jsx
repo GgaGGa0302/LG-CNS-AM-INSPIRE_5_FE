@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // useNavigate 추가
+import { Link, useNavigate } from 'react-router-dom'; 
 import styled from 'styled-components';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
@@ -12,7 +12,7 @@ const SignUpForm = ({ onSuccess }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const navigate = useNavigate(); // 페이지 이동 마법사 추가
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,7 +62,7 @@ const SignUpForm = ({ onSuccess }) => {
           type="email"
           name="email"
           placeholder="이메일을 입력하세요"
-          value={email} // This is used as loginId
+          value={email} 
           onChange={(e) => setEmail(e.target.value)}
         />
         <Input

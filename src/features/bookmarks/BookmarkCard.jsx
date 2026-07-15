@@ -55,21 +55,18 @@ const BookmarkCard = ({ bookmark, onUpdate, onDelete }) => {
       <CardImage $imageUrl={bookmark.imageUrl} />
       <CardBody>
         <CardTitle>{bookmark.title || '축제명'}</CardTitle>
-        {/* 
-          메모 영역 클릭 시 카드 전체 클릭(페이지 이동) 방지
-          수정 모드가 아닐 때 커서 모양이 바뀌지 않도록 cursor: default 적용
-        */}
+    
         <MemoTextarea
           ref={textareaRef}
           value={memo}
           onChange={(e) => setMemo(e.target.value)} 
           readOnly={!isEditing}
           onClick={(e) => {
-            e.stopPropagation(); // 수정 모드 여부와 관계없이 메모 영역 클릭 시 페이지 이동 방지
+            e.stopPropagation();
           }}
           style={{ cursor: isEditing ? 'text' : 'default' }}
         />
-        {/* 버튼 영역 클릭 시 카드 전체 클릭(페이지 이동) 방지 */}
+ 
         <CardActions onClick={(e) => {
           e.stopPropagation();
         }}>
@@ -170,11 +167,9 @@ const ActionButton = styled.button`
   }
 `;
 
-// ✏️ 사진 속 베이지/크림 톤의 완전히 둥근 버튼 사양
+
 const EditButton = styled(ActionButton)`
   flex: 1.5;
-  
-  /* 사진 속 따뜻한 크림색 계열 색상 */
   color: #4a3f35; 
   background-color: #f4ebe1; 
   
@@ -184,7 +179,7 @@ const EditButton = styled(ActionButton)`
 `;
 
 const SaveButton = styled(ActionButton)`
-  flex: 1.5; /* '삭제' 버튼보다 길이를 더 길게 조정 */
+  flex: 1.5;
   color: ${({ theme }) => theme.colors.white};
   background-color: #d76d38;
 
@@ -195,9 +190,7 @@ const SaveButton = styled(ActionButton)`
 
 
 const DeleteButton = styled(ActionButton)`
-  flex: 0.8; /* 사진 속 가로 비율감에 맞게 크기 살짝 조정 */
-  
-  /* 사진 속 부드러운 핑크 바탕 + 딥 레드 글씨 조합 */
+  flex: 0.8;
   color: #c92a2a; 
   background-color: #fff0f0; 
   

@@ -45,7 +45,7 @@ const BookmarkBtn = styled.button`
   justify-content: center;
   gap: 8px;
   width: 100%;
-  min-width: 240px; /* 버튼의 최소 가로 폭을 늘려 더 안정적인 비율로 조정 */
+  min-width: 240px;
   padding: 14px 24px;
   font-size: 16px;
   font-weight: 600;
