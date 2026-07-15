@@ -139,11 +139,14 @@ const DetailPage = () => {
             <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '10px' }}>
               마이페이지에 함께 저장될 나만의 여행 계획이나 팁을 자유롭게 남겨보세요!
             </p>
-            <MemoInput 
-              placeholder="예: 아이들 데리고 토요일 아침 일찍 출발하기" 
-              value={memo}
-              onChange={(e) => setMemo(e.target.value)}
-            />
+            <MemoWrapper>
+              <MemoInput 
+                placeholder="예: 아이들 데리고 토요일 아침 일찍 출발하기" 
+                value={memo}
+               onChange={(e) => setMemo(e.target.value.substring(0, 255))}
+              />
+              <CharCounter $isError={memo.length >= 255}>{memo.length} / 255</CharCounter>
+            </MemoWrapper>
             <ButtonGroup>
               <ModalButton onClick={() => setIsModalOpen(false)}>취소</ModalButton>
               <ModalButton $primary onClick={handleModalSubmit}>
@@ -221,21 +224,37 @@ const ModalContent = styled.div`
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 `;
 
+const MemoWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+`;
+
 const MemoInput = styled.textarea`
   width: 100%;
   height: 120px;
   padding: 15px;
+  padding-bottom: 30px; /* Make space for the counter */
   border: 1px solid #ddd;
   border-radius: 8px;
   resize: none;
   font-family: inherit;
-  margin-bottom: 20px;
   font-size: 0.95rem;
+  box-sizing: border-box;
 
   &:focus {
     outline: none;
     border-color: #c05c36;
   }
+`;
+
+const CharCounter = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  font-size: 0.8rem;
+  color: ${({ theme, $isError }) => $isError ? theme.colors.danger : theme.colors.textLight};
+  pointer-events: none;
 `;
 
 const ButtonGroup = styled.div`

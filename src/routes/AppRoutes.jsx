@@ -10,30 +10,13 @@ const AppRoutes = () => (
   <Routes>
     <Route path="/login" element={<LoginPage />} />
     <Route path="/signup" element={<SignUpPage />} />
-    <Route
-      path="/"
-      element={
-         <ProtectedRoute>
-          <MainPage />
-        </ProtectedRoute>
-      }
-    />
-    <Route
-      path="/festivals/:festivalId"
-      element={
-        <ProtectedRoute>
-          <DetailPage />
-         </ProtectedRoute>
-      }
-    />
-    <Route
-      path="/mypage"
-      element={
-         <ProtectedRoute>
-          <MyPage />
-        </ProtectedRoute>
-      }
-    />
+    
+    <Route element={<ProtectedRoute />}>
+      <Route path="/" element={<MainPage />} />
+      <Route path="/festivals/:festivalId" element={<DetailPage />} />
+      <Route path="/mypage" element={<MyPage />} />
+    </Route>
+
     <Route path="*" element={<Navigate to="/" replace />} />
   </Routes>
 );

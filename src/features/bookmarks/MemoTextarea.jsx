@@ -1,36 +1,38 @@
 import { forwardRef } from 'react';
 import styled from 'styled-components';
 
-const MemoTextarea = forwardRef(
-  ({ value, onChange, placeholder = '개인 메모를 입력하세요', readOnly = false, onClick }, ref) => (
-    <MemoWrapper onClick={onClick}>
-      <MemoLabel>메모</MemoLabel>
+const MemoTextarea = forwardRef((props, ref) => {
+  const {
+    value = '',
+    onChange,
+    placeholder = '개인 메모를 입력하세요',
+    readOnly = false,
+    onClick,
+    maxLength = 255, 
+  } = props;
+
+  return (
+    <div onClick={onClick}>
       <MemoInput
         ref={ref}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
         readOnly={readOnly}
+        maxLength={maxLength}
       />
-    </MemoWrapper>
-  ),
-);
+      {!readOnly && (
+        <CharCounter $isError={value.length >= maxLength}>
+          {value.length} / {maxLength}
+        </CharCounter>
+      )}
+    </div>
+  );
+});
 
 export default MemoTextarea;
 
 // Styles
-const MemoWrapper = styled.div`
-  width: 100%;
-`;
-
-const MemoLabel = styled.label`
-  display: block;
-  font-size: ${({ theme }) => theme.fontSizes.xs};
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.textLight};
-  margin-bottom: ${({ theme }) => theme.spacing.xs};
-`;
-
 const MemoInput = styled.textarea`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
@@ -40,7 +42,8 @@ const MemoInput = styled.textarea`
   background-color: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
   resize: none;
-  height: 48px;
+  height: 80px; /* 🎨 높이를 늘려 글자 수 카운터 공간 확보 */
+  box-sizing: border-box;
   line-height: 1.4;
 
   &[readOnly] {
@@ -52,4 +55,13 @@ const MemoInput = styled.textarea`
     border-color: ${({ theme }) => theme.colors.secondary};
     outline: none;
   }
+`;
+
+const CharCounter = styled.div`
+  text-align: right;
+  font-size: 0.75rem;
+  color: ${({ theme, $isError }) =>
+    $isError ? theme.colors.danger : theme.colors.textLight};
+  margin-top: 4px;
+  padding-right: 4px;
 `;
