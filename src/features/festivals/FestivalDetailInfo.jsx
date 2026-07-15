@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components'; 
 import { getRegionName } from '../../utils/regionMapper.js';
 
 const FestivalDetailInfo = ({ festival, loading }) => {
@@ -41,23 +41,40 @@ const FestivalDetailInfo = ({ festival, loading }) => {
 
 export default FestivalDetailInfo;
 
-// --- 로딩 스켈레톤 스타일 ---
+
+const shimmer = keyframes`
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+`;
+
+
 const Skeleton = styled.div`
   background-color: ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  animation: pulse 1.5s infinite ease-in-out;
+  position: relative;
+  overflow: hidden;
 
-  @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.6; }
-    100% { opacity: 1; }
-  }
+  background: linear-gradient(
+    90deg,
+    ${({ theme }) => theme.colors.border} 25%,
+    #ebdccb 37%,
+    ${({ theme }) => theme.colors.border} 63%
+  );
+  
+  background-size: 200% 100%;
+  
+  animation: ${shimmer} 1.4s infinite linear;
 `;
 
 const SkeletonImage = styled(Skeleton)`
   width: 100%;
   padding-top: 56.25%;
   margin-bottom: ${({ theme }) => theme.spacing.md};
+  border-radius: ${({ theme }) => theme.borderRadius.xl}; 
 `;
 
 const SkeletonTitle = styled(Skeleton)`
@@ -72,16 +89,12 @@ const SkeletonMeta = styled(Skeleton)`
   margin-bottom: ${({ theme }) => theme.spacing.lg};
 `;
 
-
 const DetailImage = styled.div`
   width: 100%;
-  padding-top: 56.25%; /
+  padding-top: 56.25%; 
   background-color: ${({ theme }) => theme.colors.border};
   background-image: url(${({ $imageUrl }) => $imageUrl});
   background-size: cover;
-  // background-image: url(${({ $imageUrl }) => $imageUrl || ''});
-  // background-size: contain; /* 이미지가 잘리지 않고 원본 비율을 유지하도록 변경 */
-  // background-repeat: no-repeat; /* 이미지가 반복되지 않도록 설정 */
   background-position: center;
   border-radius: ${({ theme }) => theme.borderRadius.xl};
   margin-bottom: ${({ theme }) => theme.spacing.md};
@@ -100,7 +113,6 @@ const DetailMeta = styled.p`
   margin-bottom: ${({ theme }) => theme.spacing.lg};
 `;
 
-
 const DescriptionBox = styled.div`
   background-color: #ffffff;
   border: 1px solid #f4ebe1;
@@ -112,9 +124,7 @@ const DescriptionBox = styled.div`
   gap: 20px;
 `;
 
-
 const DescriptionTitle = styled.h2`
-  // font-family: ${({ theme }) => theme.fonts.display || 'serif'};
   font-size: 24px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.text || '#1a1a1a'};

@@ -1,11 +1,7 @@
-import styled from 'styled-components';
-import { FaRegStar, FaCheck } from 'react-icons/fa'; // 상단 별, 체크 아이콘
+import styled, { keyframes } from 'styled-components';
+import { FaRegStar } from 'react-icons/fa'; // 상단 별, 체크 아이콘
 
-const PLACEHOLDER_SUMMARY = [
-  '유모차 접근이 용이한 주요 동선이 마련되어 있습니다.',
-  '인근 공영주차장 이용 시 도보 5분 거리입니다.',
-  '가족 휴게 공간 및 수유실이 축제장 내 운영됩니다.',
-];
+const PLACEHOLDER_SUMMARY = ['관련 AI 분석 정보가 없습니다.'];
 
 const AiSummaryBox = ({ summary, loading = false }) => {
   const lines = summary?.length > 0 ? summary : PLACEHOLDER_SUMMARY;
@@ -25,12 +21,20 @@ const AiSummaryBox = ({ summary, loading = false }) => {
 
       <ContentSection>
         {loading ? (
-          <LoadingText>AI가 정보를 분석하고 있습니다...</LoadingText>
+          <LoadingWrapper>
+            <Spinner />
+            <LoadingText>AI가 정보를 분석하고 있습니다...</LoadingText>
+          </LoadingWrapper>
         ) : (
           <SummaryList>
-            {lines.map((line, index) => (
-              <SummaryItem key={index}>✨ {line}</SummaryItem>
-            ))}
+            {lines.map(
+              (line, index) => (
+        
+                <SummaryItem key={index}>
+                  {line.trim() ? `✨ ${line}` : ' '}
+                </SummaryItem>
+              ),
+            )}
           </SummaryList>
         )}
       </ContentSection>
@@ -50,7 +54,7 @@ const SummaryBox = styled.div`
 `;
 
 const HeaderSection = styled.div`
-  background-color: #33231a; /* 사진 속 딥 브라운 색상 */
+  background-color: #33231a; 
   padding: 18px 24px;
   display: flex;
   align-items: center;
@@ -65,7 +69,7 @@ const StarBadge = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #dfa857; /* 금색 별 색상 */
+  color: #dfa857; 
   border: 1px solid rgba(255, 255, 255, 0.15);
 `;
 
@@ -88,7 +92,7 @@ const HeaderTitleDocs = styled.div`
 `;
 
 const ContentSection = styled.div`
-  padding: 80px 24px;
+  padding: 40px 24px; 
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -115,5 +119,28 @@ const LoadingText = styled.p`
   font-style: italic;
   text-align: center;
   padding: 20px 0;
-  margin: 0;
+  margin: 10px 0 0 0;
+`;
+
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+`;
+
+
+const spin = keyframes`
+  to { transform: rotate(360deg); }
+`;
+
+const Spinner = styled.div`
+  width: 32px;
+  height: 32px;
+  border: 4px solid #f4ebe1; 
+  border-top-color: #c05c36; 
+  border-radius: 50%;
+  animation: ${spin} 1s linear infinite;
 `;

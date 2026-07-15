@@ -1,15 +1,13 @@
 import styled, { css } from 'styled-components'; 
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
-// 🛠️ 깔끔한 라인 스타일의 웹 아이콘 임포트
 import { FiSearch, FiHeart } from 'react-icons/fi';
 
 const Header = () => {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation(); // 📍 현재 어떤 페이지에 있는지 주소 가져오기
+  const location = useLocation(); 
 
-  // const isLogin = true;
 
   const handleLogout = () => {
     logout();
@@ -70,16 +68,15 @@ const HeaderContainer = styled.header`
   width: 100%;
 `;
 
-/* 🛠️ [레이아웃 수정] 로고와 메뉴를 양끝으로 시원하게 찢어주는 핵심 스타일 */
 const HeaderInner = styled.div`
   width: 100%;
-  max-width: 100%; /* ❌ 기존 테마 maxWidth(1200px)에 갇히지 않도록 100%로 확장 */
+  max-width: 100%;
   height: 100%;
   margin: 0 auto;
-  padding: 0 40px; /* 📍 좌우 여백을 40px로 넉넉하게 주어 화면 끝에서 살짝 떨어지게 배치 */
+  padding: 0 40px; 
   display: flex;
   align-items: center;
-  justify-content: space-between; /* 로고는 왼쪽 끝, 메뉴는 오른쪽 끝으로 배치 */
+  justify-content: space-between; 
 `;
 
 const LogoContainer = styled(Link)`
@@ -107,7 +104,7 @@ const Nav = styled.nav`
   gap: ${({ theme }) => theme.spacing?.sm || '8px'};
 `;
 
-/* 🎨 피그마 캡처 화면 100% 매핑 스타일 */
+
 const NavLink = styled(Link)`
   display: flex;
   align-items: center;
@@ -115,8 +112,6 @@ const NavLink = styled(Link)`
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
-  
-  /* 🔲 평소 상태 스타일 */
   padding: 10px 20px;
   border: none;
   border-radius: 100px;
@@ -132,7 +127,6 @@ const NavLink = styled(Link)`
     transition: stroke 0.25s ease-in-out;
   }
 
-  /* 🧡 마우스 호버(Hover) 스타일 */
   &:hover {
     color: #c05c36;
     background-color: #fdf0e9;
@@ -142,7 +136,6 @@ const NavLink = styled(Link)`
     }
   }
 
-  /* 🎯 활성화($isActive) 상태 분기 처리 */
   ${({ $isActive }) =>
     $isActive &&
     css`
@@ -155,18 +148,3 @@ const NavLink = styled(Link)`
     `}
 `;
 
-/* 🎯 My Festivals 우측의 숫자 뱃지 스타일 */
-const Badge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #c05c36;
-  color: #ffffff;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 10px;
-  min-width: 18px;
-  height: 18px;
-  line-height: 1;
-`;

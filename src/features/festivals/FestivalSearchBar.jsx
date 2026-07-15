@@ -9,7 +9,12 @@ const FestivalSearchBar = ({ onSearch, initialRegion = '' }) => {
   const dropdownRef = useRef(null);
 
   // 현재 선택된 지역의 이름 찾기
-  const selectedLabel = REGION_CODES[selectedRegion] || '지역을 선택하세요';
+  let selectedLabel = '지역을 선택하세요'; // 기본값
+  if (selectedRegion === 'all') {
+    selectedLabel = '전체 지역';
+  } else if (REGION_CODES[selectedRegion]) {
+    selectedLabel = REGION_CODES[selectedRegion];
+  }
 
   const handleToggle = () => setIsOpen(!isOpen);
 
@@ -41,6 +46,13 @@ const FestivalSearchBar = ({ onSearch, initialRegion = '' }) => {
       {/* 📜 커스텀 옵션 리스트 (메뉴판) */}
       {isOpen && (
         <OptionList>
+     
+          <OptionItem
+            $isSelected={selectedRegion === 'all'}
+            onClick={() => handleSelect('all')}
+          >
+            전체 지역
+          </OptionItem>
           {Object.entries(REGION_CODES).map(([code, name]) => (
             <OptionItem
               key={code}
@@ -117,7 +129,6 @@ const OptionList = styled.ul`
   list-style: none;
   z-index: 100;
   
-  /* 스크롤바 커스텀 */
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -132,8 +143,7 @@ const OptionItem = styled.li`
   padding: 12px 24px;
   font-size: 0.95rem;
   font-weight: ${({ $isSelected }) => ($isSelected ? '600' : '500')};
-  
-  /* 🧡 선택된 아이템은 주황색 글씨, 호버 시 연한 살구빛 오렌지 배경 */
+
   color: ${({ $isSelected }) => ($isSelected ? '#c05c36' : '#444444')};
   background-color: ${({ $isSelected }) => ($isSelected ? '#fdf0e9' : 'transparent')};
   

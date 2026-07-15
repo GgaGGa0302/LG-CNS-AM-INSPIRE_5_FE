@@ -6,22 +6,6 @@ import { getBookmarks } from '../api/bookmarksApi';
 import BookmarkCard from '../features/bookmarks/BookmarkCard.jsx';
 
 
-const MOCK_BOOKMARKS = [
-  {
-    bookmarkId: 'b1',
-    contentId: '1',
-    title: '서울 봄꽃 축제',
-    imageUrl: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=800&auto=format&fit=crop',
-    userMemo: '아이들 데리고 토요일 아침 일찍 출발하기. 돗자리 챙길 것!',
-  },
-  {
-    bookmarkId: 'b2',
-    contentId: '2',
-    title: '부산 해운대 모래축제',
-    imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop',
-    userMemo: '근처 맛집(돼지국밥) 검색해보기',
-  }
-];
 
 const MyPage = () => {
 
@@ -31,7 +15,7 @@ const MyPage = () => {
   const fetchBookmarks = async () => {
     try {
       const response = await getBookmarks();
-      console.log("북마크 전체 응답 구조:", response);
+      // console.log("북마크 전체 응답 구조:", response);
 
       if (response.data && response.data.data) {
         setBookmarks(response.data.data);
@@ -41,7 +25,6 @@ const MyPage = () => {
       
     } catch (err) {
       console.error("Failed to fetch bookmarks:", err);
-      // setBookmarks(MOCK_BOOKMARKS); 
     } finally {
     }
   };
@@ -58,7 +41,6 @@ const MyPage = () => {
   };
 
   const handleDelete = (bookmarkId) => {
-    // 삭제된 아이디만 쏙 빼고 나머지 축제들로만 화면을 다시 그립니다.
     setBookmarks((prev) => prev.filter((item) => item.bookmarkId !== bookmarkId));
   };
 
@@ -113,7 +95,7 @@ export default MyPage;
 const PageWrapper = styled.main`
   flex: 1;
   padding: 60px 20px;
-  /* background-color: #fcfcfc; */ /* 다른 페이지와 통일성을 위해 제거 */
+  /* background-color: #fcfcfc; 
   min-height: calc(100vh - 80px); 
 `;
 
@@ -122,11 +104,11 @@ const PageInner = styled.div`
   margin: 0 auto;
 `;
 
-// 📌 상단 헤더 정렬용 컨테이너 (왼쪽: 타이틀 섹션 / 오른쪽: 뱃지 박스)
+
 const TitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: flex-end; /* 아래선 정렬 */
+  align-items: flex-end; 
   margin-bottom: ${({ theme }) => theme.spacing.xl};
   padding-bottom: ${({ theme }) => theme.spacing.md};
 `;
@@ -134,13 +116,13 @@ const TitleContainer = styled.div`
 const TitleLeft = styled.div`
   display: flex;
   flex-direction: column;
-  text-align: left; /* 왼쪽 정렬 변경 */
+  text-align: left; 
 `;
 
 const SubTitle = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.s};
   font-weight: 700;
-  color: #d76d38; /* 아까 추출한 테라코타 포인트 컬러 적용 */
+  color: #d76d38; 
   letter-spacing: 0.05em;
   margin-bottom: 6px;
 `;
@@ -167,10 +149,10 @@ const CountBadge = styled.div`
   border: 1px solid #e9ded3;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   height: fit-content;
-  margin-bottom: 6px; /* 설명 글 라인과 균형 맞춤 */
+  margin-bottom: 6px; 
 
   .heart-icon {
-    color: #c92a2a; /* 핑크/레드 하트 컬러 */
+    color: #c92a2a;
   }
 
   .count-num {
