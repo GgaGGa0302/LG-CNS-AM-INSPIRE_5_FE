@@ -9,11 +9,13 @@ const FestivalSearchBar = ({ onSearch, initialRegion = '' }) => {
   const dropdownRef = useRef(null);
 
   // 현재 선택된 지역의 이름 찾기
-  let selectedLabel = '지역을 선택하세요'; // 기본값
+  let selectedLabel = '지역을 선택하세요';
   if (selectedRegion === 'all') {
     selectedLabel = '전체 지역';
   } else if (REGION_CODES[selectedRegion]) {
     selectedLabel = REGION_CODES[selectedRegion];
+  } else if (selectedRegion === '') {
+    selectedLabel = '지역을 선택하세요'; 
   }
 
   const handleToggle = () => setIsOpen(!isOpen);

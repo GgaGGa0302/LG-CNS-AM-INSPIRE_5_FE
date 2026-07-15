@@ -43,10 +43,9 @@ const GridContainer = styled.div`
 `;
 
 const Grid = styled.div`
-  display: flex;
-  flex-wrap: wrap; 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
   gap: 24px;
-  justify-content: center; /* 🎨 카드를 중앙으로 정렬하도록 변경 */
   width: 100%;
 `;
 

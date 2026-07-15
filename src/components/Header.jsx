@@ -19,7 +19,7 @@ const Header = () => {
       <HeaderInner>
         <LogoContainer to="/">
           <LogoIcon>🎡</LogoIcon>
-          <LogoText>FestMily</LogoText>
+          <LogoText>모아패밀리</LogoText>
         </LogoContainer>
         <Nav>
           {isAuthenticated ? (
