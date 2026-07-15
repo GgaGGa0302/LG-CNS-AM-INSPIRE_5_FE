@@ -18,7 +18,7 @@ const SignUpPage = () => {
         <SignUpCard>
           <LogoArea>
             <LogoIcon>🎡</LogoIcon>
-            <LogoText>FestAI</LogoText>
+            <LogoText>모아패밀리</LogoText>
             <LogoSubtext>가족 맞춤 축제 큐레이션</LogoSubtext>
           </LogoArea>
           <SignUpForm onSuccess={handleSignUpSuccess} />

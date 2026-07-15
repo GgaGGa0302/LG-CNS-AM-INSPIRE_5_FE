@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../components/Header.jsx';
 import { searchFestivals } from '../api/festivalsApi';
@@ -12,6 +12,20 @@ const MainPage = () => {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
 
+  useEffect(() => {
+
+    const cachedFestivals = sessionStorage.getItem('cachedFestivals');
+    const cachedRegion = sessionStorage.getItem('cachedRegion');
+
+    if (cachedFestivals && cachedRegion) {
+      setFestivals(JSON.parse(cachedFestivals));
+      setSearched(true);
+    } else {
+      handleSearch({ region: 'all' });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleSearch = async (params) => {
     // console.log(
     //   "SearchParams:", params
@@ -21,8 +35,11 @@ const MainPage = () => {
   try {
     const response = await searchFestivals(params);
 
-    // console.log("실제 상태에 들어갈 배열:", response.data);
-    setFestivals(response.data || []); 
+    const festivalData = response.data || [];
+    setFestivals(festivalData); 
+
+    sessionStorage.setItem('cachedFestivals', JSON.stringify(festivalData));
+    sessionStorage.setItem('cachedRegion', params.region);
     
   } catch (err) {
     console.error("Failed to fetch festivals:", err);
@@ -44,7 +61,10 @@ const MainPage = () => {
           <HeroSubtitle>
             우리 가족에게 딱 맞는 축제를 찾아보세요
           </HeroSubtitle>
-          <FestivalSearchBar onSearch={handleSearch} />
+          <FestivalSearchBar
+            onSearch={handleSearch}
+            initialRegion={sessionStorage.getItem('cachedRegion') || 'all'}
+          />
         </HeroContent>
       </HeroSection>
       <MainContent>

@@ -9,7 +9,7 @@ const LoginPage = () => (
       <LoginCard>
         <LogoArea>
           <LogoIcon>🎡</LogoIcon>
-          <LogoText>FestMily</LogoText>
+          <LogoText>모아패밀리</LogoText>
           <LogoSubtext>우리 가족에게 딱 맞는 축제를 찾아보세요</LogoSubtext>
         </LogoArea>
         <LoginForm />
